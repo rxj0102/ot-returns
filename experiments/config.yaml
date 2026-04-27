@@ -1,0 +1,34 @@
+data:
+  n_dates: 504
+  n_stocks: 500
+  seed: 42
+  min_stocks: 100
+  winsorize: 0.005
+
+distances:
+  p: 2
+  n_quantiles: 1000
+  sinkhorn_reg: 0.01
+
+regimes:
+  n_regimes: 3
+  smoothing_window: 5
+
+barycenters:
+  n_quantiles: 1000
+
+interpolation:
+  n_steps: 20
+  n_quantiles: 1000
+
+testing:
+  n_permutations: 999
+  n_bootstrap: 999
+  confidence: 0.95
+
+factors:
+  n_factors: 3
+  n_quantiles: 500
+
+output_dir: results/
+figures_dir: figures/
