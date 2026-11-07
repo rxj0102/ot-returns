@@ -1,5 +1,7 @@
 # ot-returns
 
+[![CI](https://github.com/rxj0102/ot-returns/actions/workflows/ci.yml/badge.svg)](https://github.com/rxj0102/ot-returns/actions/workflows/ci.yml)
+
 A research-grade Python library for applying **optimal transport** theory to cross-sectional equity return distributions.
 
 > Target venues: *Journal of Financial Econometrics*, *Quantitative Finance*, *Annals of Applied Statistics*
