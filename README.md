@@ -53,7 +53,7 @@ For Gaussians it is affine: $T(x) = \mu_\nu + (\sigma_\nu/\sigma_\mu)(x - \mu_\m
 
 $$\bar\mu = \arg\min_\nu \sum_t \lambda_t W_2^2(\nu, \mu_t)$$
 
-**1-d closed form**: $F_{\bar\mu}^{-1}(u) = \sum_t \lambda_t F_{\mu_t}^{-1}(u)$ — the barycenter quantile function is the weighted average of the input quantile functions.  $O(T \cdot Q)$ computation.
+**1-d closed form**: $F_{\bar\mu}^{-1}(u) = \sum_t \lambda_t F_{\mu_t}^{-1}(u)$; the barycenter quantile function is the weighted average of the input quantile functions.  $O(T \cdot Q)$ computation.
 
 ### McCann Displacement Interpolation (McCann 1997)
 
@@ -91,7 +91,7 @@ pip install -e ".[dev]"
 
 ---
 
-## Quickstart — Regime Detection in ~15 lines
+## Quickstart: Regime Detection in ~15 lines
 
 ```python
 import sys; sys.path.insert(0, ".")
