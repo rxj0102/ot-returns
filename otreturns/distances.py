@@ -59,31 +59,28 @@ def wasserstein_1d(
         diff = np.sort(mu.samples) - np.sort(nu.samples)
         return float(np.mean(np.abs(diff) ** p) ** (1.0 / p))
 
-    # General path: merge support points onto a joint CDF grid.
-    # Build the combined sorted support and integrate |Q_mu - Q_nu|^p
-    # over each sub-interval using the quantile functions.
-    all_points = np.concatenate([mu._sorted_samples, nu._sorted_samples])
-    all_points = np.unique(all_points)
-
-    # CDF values just to the right of each point give the quantile level
-    # at the right endpoint of each interval.
-    cdf_mu = mu.cdf(all_points)   # shape (k,)
-    cdf_nu = nu.cdf(all_points)   # shape (k,)
-
-    # Build a fine uniform quantile grid covering (0, 1) — include both
-    # CDF break-points and a dense uniform grid to capture all intervals.
-    n_grid = max(1000, 4 * (mu.n + nu.n))
-    u_uniform = np.linspace(0.0, 1.0, n_grid + 2)[1:-1]  # (0,1) exclusive
-    u_grid = np.union1d(u_uniform, np.concatenate([cdf_mu, cdf_nu]))
-    u_grid = np.clip(u_grid, 0.0, 1.0)
-
-    q_mu = mu.quantile_function(u_grid)
-    q_nu = nu.quantile_function(u_grid)
-
-    # Trapezoidal integration of |q_mu - q_nu|^p over u in [0,1]
-    integrand = np.abs(q_mu - q_nu) ** p
-    cost = float(np.trapezoid(integrand, u_grid))
+    # General path: both quantile functions are step functions, constant between the
+    # cumulative weights of their sorted samples. Merging the two sets of breakpoints
+    # gives intervals on which both are constant, so the integral is an exact sum.
+    xs, cx = _sorted_support(mu)
+    ys, cy = _sorted_support(nu)
+    breaks = np.unique(np.concatenate([[0.0], cx, cy, [1.0]]))
+    breaks = breaks[(breaks >= 0.0) & (breaks <= 1.0)]
+    mid = 0.5 * (breaks[:-1] + breaks[1:])
+    width = np.diff(breaks)
+    qx = xs[np.minimum(np.searchsorted(cx, mid, side="left"), len(xs) - 1)]
+    qy = ys[np.minimum(np.searchsorted(cy, mid, side="left"), len(ys) - 1)]
+    cost = float(np.sum(width * np.abs(qx - qy) ** p))
     return float(cost ** (1.0 / p))
+
+
+def _sorted_support(dist: EmpiricalDistribution) -> tuple[np.ndarray, np.ndarray]:
+    """Sorted samples and their cumulative weights, normalised to end at exactly 1."""
+    order = np.argsort(dist.samples, kind="mergesort")
+    xs = np.asarray(dist.samples, dtype=float)[order]
+    cw = np.cumsum(np.asarray(dist.weights, dtype=float)[order])
+    cw = cw / cw[-1]
+    return xs, cw
 
 
 # ---------------------------------------------------------------------------
