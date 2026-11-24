@@ -188,7 +188,7 @@ ot-returns/
 ## Running Tests
 
 ```bash
-pytest --tb=short -q      # all 365 tests
+pytest --tb=short -q      # all 369 tests
 pytest tests/test_regimes.py -v   # specific module
 ```
 
@@ -225,7 +225,7 @@ uv run pytest -q   # runs the test suite
 
 ### Runtime
 
-The test suite (365 tests) finishes in about 6 minutes on the machine above, including any data downloads it triggers.
+The test suite (369 tests) finishes in about 6 minutes on the machine above, including any data downloads it triggers.
 
 ### Citation
 
