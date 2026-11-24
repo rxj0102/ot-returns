@@ -188,7 +188,7 @@ ot-returns/
 ## Running Tests
 
 ```bash
-pytest --tb=short -q      # all 365 tests
+pytest --tb=short -q      # all 369 tests
 pytest tests/test_regimes.py -v   # specific module
 ```
 
@@ -205,6 +205,12 @@ python experiments/run_interpolation_visualization.py
 Results and figures are saved to `results/` and `figures/`.
 
 ---
+
+## Limits
+
+- **No result on real returns yet.** The experiments in `experiments/` run on synthetic panels from `data/synthetic.py` (504 dates, 500 stocks, seed 42 in `experiments/config.yaml`). `data/loader.py` reads a real long-format panel, but no real-data run is reported here.
+- **Shape, not stocks.** Each date's cross-section is an equal-weighted distribution of returns. Which stock earned which return, and market cap, are dropped, so the tools measure how the distribution changed, not who moved.
+- **The number of regimes is set, not estimated.** `n_regimes: 3` in the config; regime detection is scored against the labels the synthetic generator planted.
 
 ## Reproducibility
 
@@ -225,7 +231,7 @@ uv run pytest -q   # runs the test suite
 
 ### Runtime
 
-The test suite (365 tests) finishes in about 6 minutes on the machine above, including any data downloads it triggers.
+The test suite (369 tests) finishes in about 6 minutes on the machine above, including any data downloads it triggers.
 
 ### Citation
 
